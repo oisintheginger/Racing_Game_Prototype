@@ -6,15 +6,18 @@ public class playerMotion : MonoBehaviour
 {
     Rigidbody pRB;
     [SerializeField] Vector3 appliedForce;
-    [SerializeField] float maxSpeed, maxForce, accelerationForce, decellerateForce, xZPlaneSpeed, jumpForce, turnSpeed;
+    [SerializeField] float maxSpeed, maxForce, accelerationForce, decellerateForce, xZPlaneSpeed, jumpForce, turnSpeed,turnScaler;
     [SerializeField] bool isGrounded;
     [SerializeField] Transform groundTransform, slopeTransform;
 
-    Ray groundCheckRay;
+    [SerializeField] Vector3 rampNormal, rampHitPoint;
 
+    Ray groundCheckRay;
+    Ray rampRay;
     private void Awake()
     {
         pRB = this.gameObject.GetComponent<Rigidbody>();
+        pRB.drag = 0f;
     }
 
     // Update is called once per frame
@@ -22,8 +25,9 @@ public class playerMotion : MonoBehaviour
     {
         GroundCheck();
         groundCheckRay = new Ray(groundTransform.position, -transform.up);
+        rampRay = new Ray(slopeTransform.position, transform.forward);
+        SlopeCheck();
         Motion();
-
     }
 
     Vector3 CalculateForce()
@@ -46,6 +50,21 @@ public class playerMotion : MonoBehaviour
             isGrounded = false;
         }
     }
+
+    void SlopeCheck()
+    {
+        RaycastHit rH;
+        if (Physics.Raycast(rampRay, out rH, 1f))
+        {
+            if (rH.collider.tag == "Ground")
+            {
+                rampNormal= rH.normal;
+                rampHitPoint = rH.point;
+            }
+            
+        }
+    }
+
     void Motion()
     {
         pRB.drag = 0;
@@ -54,28 +73,24 @@ public class playerMotion : MonoBehaviour
 
         //turning
         float turning = Input.GetAxis("Horizontal");
-        pRB.AddRelativeTorque(transform.up * turning * (turnSpeed*(maxSpeed/Mathf.Max(10f, velocity.magnitude))));
+        pRB.AddRelativeTorque(transform.up * turning * (turnSpeed*(maxSpeed/Mathf.Max(15f, velocity.magnitude*turnScaler))));
 
-        //speedClamping
-        
-        if(Input.GetKey(KeyCode.W))
+
+        xZPlaneSpeed = Mathf.Sqrt((velocity.x * velocity.x) + (velocity.z * velocity.z));
+        if (xZPlaneSpeed < maxSpeed)
         {
-
-            xZPlaneSpeed = Mathf.Sqrt((velocity.x * velocity.x) + (velocity.z * velocity.z));
-            if (xZPlaneSpeed < maxSpeed)
-            {
-                pRB.AddForce(transform.forward * accelerationForce,ForceMode.VelocityChange);
-            }
-            if (xZPlaneSpeed >= maxSpeed)
-            {
-                Vector3 normalizedXZMovement = new Vector3(velocity.x / xZPlaneSpeed, velocity.y, velocity.z / xZPlaneSpeed);
-
-                Vector3 xzSpeed = new Vector3(normalizedXZMovement.x * maxSpeed, velocity.y, normalizedXZMovement.z * maxSpeed);
-
-                pRB.velocity = xzSpeed;
-            }
+            pRB.AddForce(transform.forward * accelerationForce*Input.GetAxis("Vertical"), ForceMode.VelocityChange);
         }
-        
+
+        if (xZPlaneSpeed >= maxSpeed)
+        {
+            Vector3 normalizedXZMovement = new Vector3(velocity.x / xZPlaneSpeed, velocity.y, velocity.z / xZPlaneSpeed);
+
+            Vector3 xzSpeed = new Vector3(normalizedXZMovement.x * maxSpeed, velocity.y, normalizedXZMovement.z * maxSpeed);
+
+            pRB.velocity = xzSpeed;
+        }
+
         if(Input.GetKeyDown(KeyCode.Space)&&isGrounded)
         {
             pRB.AddForce(transform.up * jumpForce,ForceMode.VelocityChange);
@@ -86,5 +101,9 @@ public class playerMotion : MonoBehaviour
     {
         Gizmos.color = Color.magenta;
         Gizmos.DrawLine(slopeTransform.position, transform.forward+slopeTransform.position);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(rampHitPoint, rampNormal+rampHitPoint);
+        
     }
 }
