@@ -115,7 +115,7 @@ MonoBehaviour:
   m_MinSize: {x: 709, y: 492}
   m_MaxSize: {x: 18004, y: 14042}
   vertical: 0
-  controlID: 6168
+  controlID: 36
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_MinSize: {x: 433, y: 492}
   m_MaxSize: {x: 14003, y: 14042}
   vertical: 0
-  controlID: 6169
+  controlID: 37
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_MinSize: {x: 232, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 6170
+  controlID: 38
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -332,9 +332,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 94e2feff
-      m_LastClickedID: -73068
-      m_ExpandedIDs: ec26ffff78f7ffff82f7ffff8cf7ffff96f7ffffa0f7fffffefaffff
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: bafaffffbefaffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -420,9 +420,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0.1717505, y: 0.3698753, z: -0.10941243}
+    m_Target: {x: 0.7536621, y: 0.3175087, z: -0.20751953}
     speed: 2
-    m_Value: {x: 0.1717505, y: 0.3698753, z: -0.10941243}
+    m_Value: {x: 0.7536621, y: 0.3175087, z: -0.20751953}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -468,17 +468,17 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.023966482, y: -0.05096314, z: 0.0012222964, w: 0.9984149}
+    m_Target: {x: 0.086539, y: -0.08953889, z: 0.00781318, w: 0.9921954}
     speed: 2
-    m_Value: {x: -0.02396648, y: 0.050963137, z: -0.0012222963, w: -0.9984148}
+    m_Value: {x: 0.08652636, y: -0.09102621, z: 0.007942904, w: 0.9920505}
   m_Size:
-    m_Target: 2.1452343
+    m_Target: 2.356043
     speed: 2
-    m_Value: 1.8452344
+    m_Value: 2.4670608
   m_Ortho:
-    m_Target: 0
+    m_Target: 1
     speed: 2
-    m_Value: 0
+    m_Value: 1
   m_CameraSettings:
     m_Speed: 2
     m_SpeedNormalized: 1
@@ -627,11 +627,11 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/ShaderTestFolder/Shader
+    - Assets/ShaderTestFolder
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/ShaderTestFolder/Shader
+  - Assets/ShaderTestFolder
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\Darragh\Documents\College\Third Year\Prototyping\BladeSurfer\Racing_Game_Prototype\Racing
     Prototype
@@ -639,9 +639,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 18400000
-    m_LastClickedID: 16408
-    m_ExpandedIDs: 00000000663c0000123f0000503f00001440000000ca9a3bffffff7f
+    m_SelectedIDs: 1a3d0000
+    m_LastClickedID: 15642
+    m_ExpandedIDs: 00000000ac3b0000063d0000083d00001a3d000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -669,7 +669,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000663c0000123f0000503f000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000ac3b0000063d0000083d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
