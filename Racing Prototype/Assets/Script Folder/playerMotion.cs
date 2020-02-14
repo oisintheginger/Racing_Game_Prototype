@@ -98,7 +98,7 @@ public class playerMotion : MonoBehaviour
         //Tapping Applies Force, the force is scaled to the Vertical input axis. i.e. only when analog is forward can enter button apply force
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            pRB.AddForce(transform.forward * accelerationForce * Input.GetAxis("Vertical"), ForceMode.VelocityChange);
+            pRB.AddForce(transform.forward * (accelerationForce * Mathf.Max(0.1f,(velocity.magnitude/maxSpeed))) * Mathf.Abs(Input.GetAxis("Vertical")), ForceMode.VelocityChange);
         }
 
         if (xZPlaneSpeed >= maxSpeed)

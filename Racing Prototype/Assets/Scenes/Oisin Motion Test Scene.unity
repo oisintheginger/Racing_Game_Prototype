@@ -1052,9 +1052,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   appliedForce: {x: 0, y: 0, z: 0}
-  maxSpeed: 22.53
+  maxSpeed: 45.9
   maxForce: 4.51
-  accelerationForce: 18.51
+  accelerationForce: 23.73
   decellerateForce: 0
   xZPlaneSpeed: 0
   jumpForce: 27.47
@@ -1065,6 +1065,10 @@ MonoBehaviour:
   slopeTransform: {fileID: 1276728571}
   rampNormal: {x: 0, y: 0, z: 0}
   rampHitPoint: {x: 0, y: 0, z: 0}
+  testVector: {x: 0, y: 0, z: 0}
+  playerPlane: {x: 0, y: 0, z: 0}
+  hitNormaltoPlane: {x: 0, y: 0, z: 0}
+  targetDir: {x: 0, y: 0, z: 0}
 --- !u!54 &1637306331
 Rigidbody:
   m_ObjectHideFlags: 0
