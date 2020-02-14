@@ -12,6 +12,8 @@ public class playerMotion : MonoBehaviour
 
     [SerializeField] Vector3 rampNormal, rampHitPoint;
 
+    [SerializeField] Vector3 testVector;
+
     Ray groundCheckRay;
     Ray rampRay;
     private void Awake()
@@ -24,9 +26,10 @@ public class playerMotion : MonoBehaviour
     void FixedUpdate()
     {
         GroundCheck();
+        SlopeCheck();
         groundCheckRay = new Ray(groundTransform.position, -transform.up);
         rampRay = new Ray(slopeTransform.position, transform.forward);
-        SlopeCheck();
+        
         Motion();
     }
 
@@ -54,12 +57,24 @@ public class playerMotion : MonoBehaviour
     void SlopeCheck()
     {
         RaycastHit rH;
-        if (Physics.Raycast(rampRay, out rH, 1f))
+        if (Physics.Raycast(rampRay, out rH, 100f))
         {
             if (rH.collider.tag == "Ground")
             {
                 rampNormal= rH.normal;
                 rampHitPoint = rH.point;
+                float angle = Vector3.Angle(Vector3.forward, rampNormal);
+
+                Vector3 playerPlane = new Vector3(slopeTransform.position.x, slopeTransform.position.y, slopeTransform.position.z);
+                //Vector3 hitpointPlane = new Vector3(rampHitPoint.x, rampHitPoint.y, rampHitPoint.z);
+                Vector3 hitNormaltoPlane = new Vector3(rampNormal.x, 0, rampNormal.z) + rampHitPoint;
+                //Vector3 targetDir = hitpointPlane - playerPlane;
+                Vector3 targetDir = (hitNormaltoPlane+rampHitPoint) - playerPlane;
+                testVector = targetDir;
+                float planeAngle = Vector3.Angle(slopeTransform.forward, hitNormaltoPlane);
+                //float testAngle = Vector3.Dot(playerPlane, hitpointPlane);
+                //Debug.Log(angle%90);
+                Debug.Log(planeAngle + " angle between");
             }
             
         }
@@ -77,10 +92,9 @@ public class playerMotion : MonoBehaviour
 
 
         xZPlaneSpeed = Mathf.Sqrt((velocity.x * velocity.x) + (velocity.z * velocity.z));
-        if (xZPlaneSpeed < maxSpeed)
-        {
-            pRB.AddForce(transform.forward * accelerationForce*Input.GetAxis("Vertical"), ForceMode.VelocityChange);
-        }
+       
+        pRB.AddForce(transform.forward * accelerationForce*Input.GetAxis("Vertical"), ForceMode.VelocityChange);
+        
 
         if (xZPlaneSpeed >= maxSpeed)
         {
@@ -103,7 +117,10 @@ public class playerMotion : MonoBehaviour
         Gizmos.DrawLine(slopeTransform.position, transform.forward+slopeTransform.position);
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(rampHitPoint, rampNormal+rampHitPoint);
+        Gizmos.DrawLine(rampHitPoint, /*rampNormal*/ new Vector3(rampNormal.x, 0, rampNormal.z) + rampHitPoint);
+        
+        
+        
         
     }
 }
