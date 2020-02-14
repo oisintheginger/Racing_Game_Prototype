@@ -12,7 +12,8 @@ public class playerMotion : MonoBehaviour
 
     [SerializeField] Vector3 rampNormal, rampHitPoint;
 
-    [SerializeField] Vector3 testVector;
+    //Testing Vectors for visualisation
+    [SerializeField] Vector3 testVector, playerPlane, hitNormaltoPlane, targetDir;
 
     Ray groundCheckRay;
     Ray rampRay;
@@ -65,13 +66,13 @@ public class playerMotion : MonoBehaviour
                 rampHitPoint = rH.point;
                 float angle = Vector3.Angle(Vector3.forward, rampNormal);
 
-                Vector3 playerPlane = new Vector3(slopeTransform.position.x, slopeTransform.position.y, slopeTransform.position.z);
+                playerPlane = new Vector3(slopeTransform.position.x, slopeTransform.position.y, slopeTransform.position.z);
                 //Vector3 hitpointPlane = new Vector3(rampHitPoint.x, rampHitPoint.y, rampHitPoint.z);
-                Vector3 hitNormaltoPlane = new Vector3(rampNormal.x, 0, rampNormal.z) + rampHitPoint;
+                hitNormaltoPlane = new Vector3(rampNormal.x, 0, rampNormal.z) + rampHitPoint;
                 //Vector3 targetDir = hitpointPlane - playerPlane;
-                Vector3 targetDir = (hitNormaltoPlane+rampHitPoint) - playerPlane;
+                targetDir = (hitNormaltoPlane-rampHitPoint) - slopeTransform.position;
                 testVector = targetDir;
-                float planeAngle = Vector3.Angle(slopeTransform.forward, hitNormaltoPlane);
+                float planeAngle = Vector3.Angle(transform.forward, targetDir);
                 //float testAngle = Vector3.Dot(playerPlane, hitpointPlane);
                 //Debug.Log(angle%90);
                 Debug.Log(planeAngle + " angle between");
@@ -92,9 +93,13 @@ public class playerMotion : MonoBehaviour
 
 
         xZPlaneSpeed = Mathf.Sqrt((velocity.x * velocity.x) + (velocity.z * velocity.z));
-       
-        pRB.AddForce(transform.forward * accelerationForce*Input.GetAxis("Vertical"), ForceMode.VelocityChange);
-        
+
+
+        //Tapping Applies Force, the force is scaled to the Vertical input axis. i.e. only when analog is forward can enter button apply force
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            pRB.AddForce(transform.forward * accelerationForce * Input.GetAxis("Vertical"), ForceMode.VelocityChange);
+        }
 
         if (xZPlaneSpeed >= maxSpeed)
         {
@@ -118,8 +123,12 @@ public class playerMotion : MonoBehaviour
 
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(rampHitPoint, /*rampNormal*/ new Vector3(rampNormal.x, 0, rampNormal.z) + rampHitPoint);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(slopeTransform.transform.position, targetDir.normalized);
         
-        
+
+
         
         
     }
