@@ -1119,7 +1119,7 @@ MonoBehaviour:
   appliedForce: {x: 0, y: 0, z: 0}
   maxSpeed: 45.9
   maxForce: 4.51
-  accelerationForce: 3.31
+  accelerationForce: 19.99
   brakeForce: 1
   xZPlaneSpeed: 0.05
   jumpForce: 27.47

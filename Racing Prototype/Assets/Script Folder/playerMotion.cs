@@ -99,7 +99,7 @@ public class playerMotion : MonoBehaviour
         Vector3 xzSpeed = new Vector3(normalizedXZMovement.x * maxSpeed, velocity.y, normalizedXZMovement.z * maxSpeed);
 
 
-        pRB.AddForce(transform.forward * (accelerationForce * Mathf.Max(0.5f, (velocity.magnitude / maxSpeed))) * Mathf.Max(0,Input.GetAxis(verticalAxis)), ForceMode.Impulse);
+        pRB.AddForce(transform.forward * (accelerationForce * Mathf.Max(0.5f, (velocity.magnitude / maxSpeed))) * Mathf.Max(0,Input.GetAxis(verticalAxis)*Time.deltaTime), ForceMode.Impulse);
      
         
         
