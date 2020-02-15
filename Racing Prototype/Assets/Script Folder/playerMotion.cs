@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class playerMotion : MonoBehaviour
 {
+    [SerializeField] string horizontalAxis, verticalAxis, jumpAxis, accelerateAxis, brakeAxis;
+
+
     Rigidbody pRB;
     [SerializeField] Vector3 appliedForce;
-    [SerializeField] float maxSpeed, maxForce, accelerationForce, decellerateForce, xZPlaneSpeed, jumpForce, turnSpeed,turnScaler;
+    [SerializeField] float maxSpeed, maxForce, accelerationForce, brakeForce, xZPlaneSpeed, jumpForce, turnSpeed,turnScaler;
     [SerializeField] bool isGrounded;
     [SerializeField] Transform groundTransform, slopeTransform;
 
@@ -32,6 +35,8 @@ public class playerMotion : MonoBehaviour
         rampRay = new Ray(slopeTransform.position, transform.forward);
         
         Motion();
+
+        
     }
 
     Vector3 CalculateForce()
@@ -67,15 +72,10 @@ public class playerMotion : MonoBehaviour
                 float angle = Vector3.Angle(Vector3.forward, rampNormal);
 
                 playerPlane = new Vector3(slopeTransform.position.x, slopeTransform.position.y, slopeTransform.position.z);
-                //Vector3 hitpointPlane = new Vector3(rampHitPoint.x, rampHitPoint.y, rampHitPoint.z);
                 hitNormaltoPlane = new Vector3(rampNormal.x, 0, rampNormal.z) + rampHitPoint;
-                //Vector3 targetDir = hitpointPlane - playerPlane;
                 targetDir = (hitNormaltoPlane-rampHitPoint) - slopeTransform.position;
                 testVector = targetDir;
                 float planeAngle = Vector3.Angle(transform.forward, targetDir);
-                //float testAngle = Vector3.Dot(playerPlane, hitpointPlane);
-                //Debug.Log(angle%90);
-                Debug.Log(planeAngle + " angle between");
             }
             
         }
@@ -88,30 +88,35 @@ public class playerMotion : MonoBehaviour
         var velocity = pRB.velocity;
 
         //turning
-        float turning = Input.GetAxis("Horizontal");
+        float turning = Input.GetAxis(horizontalAxis);
         pRB.AddRelativeTorque(transform.up * turning * (turnSpeed*(maxSpeed/Mathf.Max(15f, velocity.magnitude*turnScaler))));
 
 
         xZPlaneSpeed = Mathf.Sqrt((velocity.x * velocity.x) + (velocity.z * velocity.z));
 
+        Vector3 normalizedXZMovement = new Vector3(velocity.x / xZPlaneSpeed, velocity.y, velocity.z / xZPlaneSpeed);
 
-        //Tapping Applies Force, the force is scaled to the Vertical input axis. i.e. only when analog is forward can enter button apply force
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            pRB.AddForce(transform.forward * (accelerationForce * Mathf.Max(0.1f,(velocity.magnitude/maxSpeed))) * Mathf.Abs(Input.GetAxis("Vertical")), ForceMode.VelocityChange);
-        }
+        Vector3 xzSpeed = new Vector3(normalizedXZMovement.x * maxSpeed, velocity.y, normalizedXZMovement.z * maxSpeed);
 
+
+        pRB.AddForce(transform.forward * (accelerationForce * Mathf.Max(0.5f, (velocity.magnitude / maxSpeed))) * Mathf.Max(0,Input.GetAxis(verticalAxis)), ForceMode.Impulse);
+     
+        
+        
         if (xZPlaneSpeed >= maxSpeed)
         {
-            Vector3 normalizedXZMovement = new Vector3(velocity.x / xZPlaneSpeed, velocity.y, velocity.z / xZPlaneSpeed);
-
-            Vector3 xzSpeed = new Vector3(normalizedXZMovement.x * maxSpeed, velocity.y, normalizedXZMovement.z * maxSpeed);
-
             pRB.velocity = xzSpeed;
         }
 
-        if(Input.GetKeyDown(KeyCode.Space)&&isGrounded)
+        if (Input.GetButton(brakeAxis))
         {
+            Debug.Log(Input.GetAxis(brakeAxis));
+            pRB.velocity = normalizedXZMovement * (brakeForce / 1);
+        }
+
+        if (Input.GetAxis(jumpAxis)>0.9f&&isGrounded)
+        {
+            
             pRB.AddForce(transform.up * jumpForce,ForceMode.VelocityChange);
         }
     }
